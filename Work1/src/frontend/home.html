@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content=
+            "width=device-width, initial-scale=1.0">
+    <title>
+        Build a Survey Form using HTML and CSS
+    </title>
+
+    <style>
+
+		/* Styling the Body element i.e. Color,
+		Font, Alignment */
+		body {
+<!--			background-color: #05c46b;-->
+<!--			font-family: Verdana;-->
+			text-align: center;
+		}
+
+		/* Styling the Form (Color, Padding, Shadow) */
+		form {
+			background-color: #fff;
+			max-width: 500px;
+			margin: 50px auto;
+			padding: 30px 20px;
+			box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+		}
+
+		/* Styling form-control Class */
+		.form-control {
+			text-align: left;
+			margin-bottom: 25px;
+		}
+
+		/* Styling form-control Label */
+		.form-control label {
+			display: block;
+			margin-bottom: 10px;
+		}
+
+		/* Styling form-control input,
+		select, textarea */
+		.form-control input,
+		.form-control select,
+		.form-control textarea {
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			padding: 10px;
+			display: block;
+			width: 95%;
+		}
+
+<!--		/* Styling form-control Radio-->
+<!--		button and Checkbox */-->
+<!--		.form-control input[type="radio"],-->
+<!--		.form-control input[type="checkbox"] {-->
+<!--			display: inline-block;-->
+<!--			width: auto;-->
+<!--		}-->
+
+		/* Styling Button */
+		button {
+			background-color: #05c46b;
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-family: inherit;
+			font-size: 21px;
+			display: block;
+			width: 100%;
+			margin-top: 50px;
+			margin-bottom: 20px;
+
+
+			background-color: #fff;
+			max-width: 500px;
+			margin: 50px auto;
+			padding: 30px 20px;
+			box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+		}
+	</style>
+</head>
+
+<body>
+
+
+<!-- Create Form -->
+<form id="form">
+
+    <!-- Details -->
+    <div class="form-control">
+        <label for="name" id="label-name">
+            Name
+        </label>
+
+        <!-- Input Type Text -->
+        <input type="text"
+               id="name"
+               placeholder="Enter your name" />
+    </div>
+
+    <div class="form-control">
+        <label for="number" id="label-name1">
+            Number
+        </label>
+
+        <!-- Input Type Text -->
+        <input type="text"
+               id="number"
+               placeholder="Enter your number" />
+    </div>
+
+    <div class="form-control">
+        <label for="price" id="label-age">
+            Price
+        </label>
+
+        <!-- Input Type Text -->
+        <input type="text"
+               id="price"
+               placeholder="Enter Price" />
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Multi-line Text Input Control -->
+
+
+
+
+
+
+
+
+</form>
+<button type="submit" value="submit" id="myBtn" >
+    order place
+</button>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+<script>
+const element = document.getElementById("myBtn");
+
+element.addEventListener("click", myFunction);
+const url='http://localhost:8080/User/orderPlace';
+
+async function getapi(url,name,number,price) {
+
+    // Storing response
+    const response =  await fetch(url, {
+  method: 'POST',
+
+  body: JSON.stringify({
+    name:name,
+    number:number,
+    price:price
+
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  }
+  });
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data);
+    localStorage.setItem("Id", data.id);
+
+     window.location.href = "http://localhost:63342/Work1/src/frontend/afterorderplace.html?_ijt=hruhfkae1lsg8p49cpoem62365&_ij_reload=RELOAD_ON_SAVE";
+
+}
+
+
+function myFunction() {
+    const name=document.getElementById('name').value;
+    const number=document.getElementById('number').value;
+    const price=document.getElementById('price').value;
+
+    getapi(url,name,number,price);
+
+
+
+
+
+
+}
+
+</script>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<body>-->
+
+<!--<h1>The Document Object</h1>-->
+<!--<h2>The getElementById() Method</h2>-->
+<!--<form id="form">-->
+
+
+<!--    <p id="demo"></p>-->
+<!--</form>-->
+
+<!--<button type="submit" value="submit" id="myBtn">-->
+<!--    order place-->
+<!--</button>-->
+<!--<script>-->
+<!--document.getElementById("demo").innerHTML = "Hello World";-->
+<!--</script>-->
+
+<!--</body>-->
+
+
+
+</html>
+

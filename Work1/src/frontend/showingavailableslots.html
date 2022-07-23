@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p id="para">
+
+</p>
+
+</body>
+
+<script>
+async function getapi(url) {
+
+    // Storing response
+    const response = await fetch(url);
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data);
+
+    show(data);
+
+
+}
+
+async function getapi1(url,hr,id) {
+
+
+
+    // Storing response
+     const response = await fetch(url, {
+  method: 'POST',
+
+  body: JSON.stringify({
+    id:id,
+    hr:hr
+
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  }
+  });
+
+    // Storing data in form of JSON
+    var data = await response.json();
+    console.log(data.min);
+    if(data.min==-1)
+    {
+
+     document.getElementById("para").innerHTML += "<br/> sorry,that slot is booked,please choose other slot";
+    }
+    else{
+     getapi2("http://localhost:8080/User/changestatus",hr,id,data.min);
+    }
+
+
+}
+
+async function getapi2(url,hr,id,min)
+{
+    const response = await fetch(url, {
+  method: 'POST',
+
+  body: JSON.stringify({
+    id:id,
+    min:min,
+    hr:hr
+
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  }
+  });
+  console.log("ok");
+
+
+   window.location.href = "http://localhost:63342/Work1/src/frontend/afterorderplace.html?_ijt=hruhfkae1lsg8p49cpoem62365&_ij_reload=RELOAD_ON_SAVE";
+
+
+}
+
+
+
+
+
+
+
+
+function show(data){
+          let tab=  '<label for="cars">Choose a slot:</label>';
+          let tab1='<select name="cars" id="cars">';
+          for(let x in data.strArray){
+            tab1=tab1+'<option value="">'+data.strArray[x]+'</option>';
+          }
+          tab1+='</select>';
+          let tab2='<br><br>'+'<button type="button" onclick="myFunction1()">submit</button>';
+          let tab3=tab+'      ' +tab1+tab2;
+          document.getElementById("para").innerHTML = tab3;
+
+
+}
+
+
+
+
+
+
+
+
+function myFunction1(){
+console.log("hii");
+var e = document.getElementById("cars");
+var strUser = e.options[e.selectedIndex].text;
+
+console.log(strUser);
+id=localStorage.getItem('Id');
+console.log(id);
+
+                    var list=strUser.split(" ");
+                    let hr=0;
+                    if(list[0]=== "next_day") {
+                        hr = hr + 24;
+                        if (list[2]=== "pm")
+                            hr = hr + 12;
+                        hr=hr+parseInt(list[1],10);
+
+                    }
+                    else
+                    {
+                        if (list[1]=== "pm")
+                            hr = hr + 12;
+                        hr=hr+parseInt(list[0],10);
+                    }
+console.log(hr);
+    getapi1("http://localhost:8080/User/addslot",hr,id);
+
+
+
+}
+
+
+
+
+    window.onload = function() {
+
+<!--    const response= fetch('http://localhost:8080/User/showavailableslots').then((response)=>response.json()).then((data)=>{console.log(data);});-->
+    getapi("http://localhost:8080/User/showavailableslots");
+    }
+
+
+
+</script>
+</html>

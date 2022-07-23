@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="form-check" onclick="return false;">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+    <label class="form-check-label" for="flexCheckChecked">
+        Order Placed
+    </label>
+</div>
+<div class="staus">
+
+
+    <p id="status">
+<!--        doctor will call you within 5 minutes-->
+    </p>
+    <P id="write">
+<!--        BUSY!!! want to schedule or edit call,click on schedule call button-->
+        &nbsp;&nbsp;
+
+    </P>
+
+<!--    <button class="btn btn-primary" type="button" id="schedulecall">schedule call</button>-->
+
+</div>
+
+
+
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onclick="return false;" >
+    <label class="form-check-label" for="flexCheckDefault">
+        Order Confirm
+    </label>
+</div>
+
+
+
+
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+
+<script>
+
+
+<!--    const elementschedulecall = document.getElementById("schedulecall");-->
+<!--if(elementschedulecall!=null){-->
+<!--elementschedulecall.addEventListener("click", schedulecall);-->
+<!--}-->
+ var id=localStorage.getItem('Id');
+       console.log(id);
+
+function schedulecall() {
+
+
+
+window.location.href="http://localhost:63342/Work1/src/frontend/showingavailableslots.html?_ijt=3u0i9s2rq4edtv2hkr4h2aam01&_ij_reload=RELOAD_ON_SAVE";
+
+
+
+}
+
+
+
+async function getapi3(url,id)
+{
+    console.log(id);
+    const response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+console.log(response);
+
+
+    // Storing data in form of JSON
+    var data = await response.json();
+
+    show1(data.str)
+
+
+}
+
+function show1(M)
+{
+    console.log(M);
+    const element=document.getElementById("status");
+
+    element.innerHTML="you will get call within 5 minutes";
+
+
+
+}
+
+
+
+
+async function callback(url){
+
+console.log(id);
+console.log(id);
+console.log("callback api is working");
+const response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+var data = await response.json();
+
+document.getElementById("status").innerHTML="you will get call back within 5 minutes";
+document.getElementById("write").innerHTML="";
+
+}
+async function getapi5(url)
+{
+    console.log(id);
+    const response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+var data1=await response.json();
+let tab1="we made";
+let tab2=data1.str;
+let tab3=" callattempt to you <br/> 3 callattempt missed will result in order cancellation";
+let tab=tab1+tab2+tab3;
+document.getElementById("status").innerHTML=tab;
+
+
+}
+
+async function getapi6(url)
+{
+
+    const response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+var data1=await response.json();
+
+let tab1="you missed ";
+let tab2=data1.str;
+let tab3=" call<br/> 2 call missed will result in order cancellation";
+let tab=tab1+tab2+tab3;
+document.getElementById("status").innerHTML=tab;
+<!--document.getElementById("status").innerHTML='we made'+data1.str+'calls to you <br/> 3 calls missed will result in order cancellation';-->
+
+
+}
+async function getapi7(url)
+{
+     let response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+let data1=await response.json();
+ document.getElementById("status").innerHTML=data1.str;
+        let tab1='If you want to edit ,you can edit your slot as well  <br/>';
+        let tab2='<button class="btn btn-primary" type="button" id="schedulecall" onclick=schedulecall() >schedule call</button>  &nbsp; &nbsp;  ';
+        let tab=tab1+tab2;
+         document.getElementById("write").innerHTML = tab;
+
+}
+
+
+async function getapi4(url,id)
+{
+
+    const response = await fetch(url+'?'+ new URLSearchParams({
+    id:id
+}));
+
+
+
+    // Storing data in form of JSON
+    var data = await response.json();
+
+    console.log(data.str);
+    if(data.str==="cs")
+    {
+        getapi7("http://localhost:8080/User/changestatus");
+    }
+    else if(data.str==="iw")
+    {
+          document.getElementById("status").innerHTML="Sorry!! we couldn't make your call in 5 minutes <br/>";
+         let tab1='pls schedule call or click on call back button';
+        let tab2='<button class="btn btn-primary" type="button" id="schedulecall" onclick=schedulecall() >schedule call</button>  &nbsp; &nbsp;  ';
+
+        console.log(id); console.log(id); console.log(id);
+        let tab3='<button class="btn btn-primary" type="button" onclick=callback("http://localhost:8080/User/callback")>callback</button>';
+
+        let tab=tab1+tab2+tab3;
+        document.getElementById("write").innerHTML = tab;
+
+    }
+    else if(data.str==="nc")
+    {
+        document.getElementById("status").innerHTML='your will get call within 5 minutes';
+        let tab1='BUSY!!! pls schedule call or click on call back button <br/>';
+        let tab2='<button class="btn btn-primary" type="button" id="schedulecall" onclick=schedulecall() >schedule call</button>  &nbsp; &nbsp;  ';
+
+        console.log(id); console.log(id); console.log(id);
+        let tab3='<button class="btn btn-primary" type="button" onclick=callback("http://localhost:8080/User/callback")>callback</button>';
+
+        let tab=tab1+tab2+tab3;
+        document.getElementById("write").innerHTML = tab;
+    }
+    else if(data.str==="co")
+    {
+
+        document.getElementById("status").innerHTML='your order is cancelled ';
+        document.getElementById("write").innerHTML=' ';
+
+    }
+    else if(data.str==="s")
+    {
+        document.getElementById("status").innerHTML=' your order is placed successfully ';
+        document.getElementById("write").innerHTML=' ';
+        document.getElementById("flexCheckDefault").checked=true;
+
+    }
+    else if(data.str==="aucb")
+    {
+            getapi5("http://localhost:8080/User/callattempt");
+
+
+
+            let tab1='BUSY!!! pls schedule call or click on call back button <br/>';
+        let tab2='<button class="btn btn-primary" type="button" id="schedulecall" onclick=schedulecall() >schedule call</button>  &nbsp; &nbsp;  ';
+
+        console.log(id); console.log(id); console.log(id);
+        let tab3='<button class="btn btn-primary" type="button" onclick=callback("http://localhost:8080/User/callback")>callback</button>';
+
+        let tab=tab1+tab2+tab3;
+        document.getElementById("write").innerHTML = tab;
+    }
+    else{
+         getapi6("http://localhost:8080/User/callmissed");
+
+
+          let tab1='BUSY!!! pls schedule call or click on call back button <br/>';
+        let tab2='<button class="btn btn-primary" type="button" id="schedulecall" onclick=schedulecall() >schedule call</button>  &nbsp; &nbsp;  ';
+
+        console.log(id); console.log(id); console.log(id);
+        let tab3='<button class="btn btn-primary" type="button" onclick=callback("http://localhost:8080/User/callback")>callback</button>';
+
+        let tab=tab1+tab2+tab3;
+        document.getElementById("write").innerHTML = tab;
+    }
+
+
+
+}
+
+
+  window.onload = function() {
+
+
+
+
+<!--        getapi3("http://localhost:8080/User/status",id);-->
+
+        getapi4("http://localhost:8080/User/write",id);
+
+
+
+
+
+    }
+
+
+</script>
+</html>
